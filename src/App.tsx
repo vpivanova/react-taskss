@@ -1,39 +1,14 @@
-// 1_7_1 Splitting a list in two 
+// 1_7_2 Nested lists in one component 
 /*
-  В этом примере показан список всех людей.
-
-  Измените его, чтобы последовательно вывести два отдельных списка: Химики и Все остальные. Как и ранее, вы можете определить, является ли человек химиком, проверив, что person.profession === 'chemist'.
+  Создайте список рецептов из этого массива! Для каждого рецепта в массиве выведите его название в виде <h2> и список ингредиентов в виде <ul>. Это потребует вложения двух различных вызовов map.
 */
 
-import { people } from './data.js';
-import { getImageUrl } from './utils.js';
+import { recipes } from './data';
 
-export type Person = {
-  id: number;
-  name: string;
-  profession: string;
-  accomplishment: string;
-  imageId: string;
-}
-
-export default function List() {
-    const listItems = people.map((person) => (
-        <li key={person.id}>
-            <img
-                src={getImageUrl(person)}
-                alt={person.name}
-            />
-            <p>
-                <b>{person.name}:</b>
-                {' ' + person.profession + ' '}
-                known for {person.accomplishment}
-            </p>
-        </li>
-    ));
+export default function RecipeList() {
     return (
-        <article>
-            <h1>Scientists</h1>
-            <ul>{listItems}</ul>
-        </article>
+        <div>
+            <h1>Recipes</h1>
+        </div>
     );
 }
