@@ -1,63 +1,37 @@
-// 1_5_1 Extract a component
-/* 
-  Компонент Gallery содержит очень похожую разметку для двух профилей. Извлеките из него компонент Profile, чтобы уменьшить дублирование кода. Для этого нужно будет определить props для компонента Profile.
+// 1_5_2 Adjust the image size based on a prop/* 
+/*
+  В этом примере Avatar получает числовой параметр size, который определяет ширину и высоту <img>. В данном примере параметр size установлен на 40. Однако если вы откроете изображение в новой вкладке, вы заметите, что само изображение больше (160 пикселей). Реальный размер изображения определяется тем, какой размер миниатюры вы запрашиваете.
+
+  Измените компонент Avatar, чтобы он запрашивал наиболее близкий размер изображения на основе параметра size. В частности, если size меньше 90, передавайте 's' ("small"), а не 'b' ("big") в функцию getImageUrl. Проверьте, что ваши изменения работают, отобразив аватары с разными значениями параметра size и открыв изображения в новой вкладке.
 */
 
 import { getImageUrl } from "./util";
 
+export type Person = {
+  name: string;
+  imageId: string;
+};
 
-export default function Gallery() {
+function Avatar({ person, size }: { person: Person; size: number }) {
   return (
-    <div>
-      <h1>Notable Scientists</h1>
-      <section className="profile">
-        <h2>Maria Skłodowska-Curie</h2>
-        <img
-          className="avatar"
-          src={getImageUrl('szV5sdG')}
-          alt="Maria Skłodowska-Curie"
-          width={70}
-          height={70}
-        />
-        <ul>
-          <li>
-            <b>Profession: </b> 
-            physicist and chemist
-          </li>
-          <li>
-            <b>Awards: 4 </b> 
-            (Nobel Prize in Physics, Nobel Prize in Chemistry, Davy Medal, Matteucci Medal)
-          </li>
-          <li>
-            <b>Discovered: </b>
-            polonium (chemical element)
-          </li>
-        </ul>
-      </section>
-      <section className="profile">
-        <h2>Katsuko Saruhashi</h2>
-        <img
-          className="avatar"
-          src={getImageUrl('YfeOqp2')}
-          alt="Katsuko Saruhashi"
-          width={70}
-          height={70}
-        />
-        <ul>
-          <li>
-            <b>Profession: </b> 
-            geochemist
-          </li>
-          <li>
-            <b>Awards: 2 </b> 
-            (Miyake Prize for geochemistry, Tanaka Prize)
-          </li>
-          <li>
-            <b>Discovered: </b>
-            a method for measuring carbon dioxide in seawater
-          </li>
-        </ul>
-      </section>
-    </div>
+    <img
+      className="avatar"
+      src={getImageUrl(person, "b")}
+      alt={person.name}
+      width={size}
+      height={size}
+    />
+  );
+}
+
+export default function Profile() {
+  return (
+    <Avatar
+      size={40}
+      person={{
+        name: "Gregorio Y. Zara",
+        imageId: "7vQD0fP",
+      }}
+    />
   );
 }
