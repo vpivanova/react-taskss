@@ -1,29 +1,31 @@
-// 1_5_3 Passing JSX in a children prop
+// 1_6_1 Show an icon for incomplete items with ? :
 /*
-  Извлеките компонент Card из приведенной ниже разметки и используйте параметр children для передачи ему различных JSX.
+  Используйте условный оператор (cond ? a : b) для отображения ❌, если isPacked не является true.
 */
 
-export default function Profile() {
+function Item({ name, isPacked }: { name: string; isPacked: boolean }) {
   return (
-    <div>
-      <div className="card">
-        <div className="card-content">
-          <h1>Photo</h1>
-          <img
-            className="avatar"
-            src="https://i.imgur.com/OKS67lhm.jpg"
-            alt="Aklilu Lemma"
-            width={70}
-            height={70}
-          />
-        </div>
-      </div>
-      <div className="card">
-        <div className="card-content">
-          <h1>About</h1>
-          <p>Aklilu Lemma was a distinguished Ethiopian scientist who discovered a natural treatment to schistosomiasis.</p>
-        </div>
-      </div>
-    </div>
+      <li className="item">
+          {name} {isPacked && '✔'}
+      </li>
+  );
+}
+
+export default function PackingList() {
+  return (
+      <section>
+          <h1>Sally Ride's Packing List</h1>
+          <ul>
+              <Item isPacked={true} name="Space suit" />
+              <Item
+                  isPacked={true}
+                  name="Helmet with a golden leaf"
+              />
+              <Item
+                  isPacked={false}
+                  name="Photo of Tam"
+              />
+          </ul>
+      </section>
   );
 }
