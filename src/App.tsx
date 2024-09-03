@@ -1,37 +1,39 @@
-// 1_6_3 Refactor a series of ? : to if and variables 
+// 1_7_1 Splitting a list in two 
 /*
-Этот компонент Drink использует серию ? : условий для отображения различной информации в зависимости от того, является ли name пропс "чай" или "кофе". Проблема в том, что информация о каждом напитке распределена по нескольким условиям. Переработайте этот код, чтобы использовать один оператор if вместо трех ? : условий.
+  В этом примере показан список всех людей.
+
+  Измените его, чтобы последовательно вывести два отдельных списка: Химики и Все остальные. Как и ранее, вы можете определить, является ли человек химиком, проверив, что person.profession === 'chemist'.
 */
 
-function Drink({ name }: { name: string }) {
-  return (
-      <section>
-          <h1>{name}</h1>
-          <dl>
-              <dt>Part of plant</dt>
-              <dd>{name === 'tea' ? 'leaf' : 'bean'}</dd>
-              <dt>Caffeine content</dt>
-              <dd>
-                  {name === 'tea'
-                      ? '15–70 mg/cup'
-                      : '80–185 mg/cup'}
-              </dd>
-              <dt>Age</dt>
-              <dd>
-                  {name === 'tea'
-                      ? '4,000+ years'
-                      : '1,000+ years'}
-              </dd>
-          </dl>
-      </section>
-  );
+import { people } from './data.js';
+import { getImageUrl } from './utils.js';
+
+export type Person = {
+  id: number;
+  name: string;
+  profession: string;
+  accomplishment: string;
+  imageId: string;
 }
 
-export default function DrinkList() {
-  return (
-      <div>
-          <Drink name="tea" />
-          <Drink name="coffee" />
-      </div>
-  );
+export default function List() {
+    const listItems = people.map((person) => (
+        <li key={person.id}>
+            <img
+                src={getImageUrl(person)}
+                alt={person.name}
+            />
+            <p>
+                <b>{person.name}:</b>
+                {' ' + person.profession + ' '}
+                known for {person.accomplishment}
+            </p>
+        </li>
+    ));
+    return (
+        <article>
+            <h1>Scientists</h1>
+            <ul>{listItems}</ul>
+        </article>
+    );
 }
