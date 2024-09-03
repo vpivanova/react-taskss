@@ -1,37 +1,29 @@
-// 1_5_2 Adjust the image size based on a prop 
+// 1_5_3 Passing JSX in a children prop
 /*
-  В этом примере Avatar получает числовой параметр size, который определяет ширину и высоту <img>. В данном примере параметр size установлен на 40. Однако если вы откроете изображение в новой вкладке, вы заметите, что само изображение больше (160 пикселей). Реальный размер изображения определяется тем, какой размер миниатюры вы запрашиваете.
-
-  Измените компонент Avatar, чтобы он запрашивал наиболее близкий размер изображения на основе параметра size. В частности, если size меньше 90, передавайте 's' ("small"), а не 'b' ("big") в функцию getImageUrl. Проверьте, что ваши изменения работают, отобразив аватары с разными значениями параметра size и открыв изображения в новой вкладке.
+  Извлеките компонент Card из приведенной ниже разметки и используйте параметр children для передачи ему различных JSX.
 */
-
-import { getImageUrl } from "./util";
-
-export type Person = {
-  name: string;
-  imageId: string;
-};
-
-function Avatar({ person, size }: { person: Person; size: number }) {
-  return (
-    <img
-      className="avatar"
-      src={getImageUrl(person, "b")}
-      alt={person.name}
-      width={size}
-      height={size}
-    />
-  );
-}
 
 export default function Profile() {
   return (
-    <Avatar
-      size={40}
-      person={{
-        name: "Gregorio Y. Zara",
-        imageId: "7vQD0fP",
-      }}
-    />
+    <div>
+      <div className="card">
+        <div className="card-content">
+          <h1>Photo</h1>
+          <img
+            className="avatar"
+            src="https://i.imgur.com/OKS67lhm.jpg"
+            alt="Aklilu Lemma"
+            width={70}
+            height={70}
+          />
+        </div>
+      </div>
+      <div className="card">
+        <div className="card-content">
+          <h1>About</h1>
+          <p>Aklilu Lemma was a distinguished Ethiopian scientist who discovered a natural treatment to schistosomiasis.</p>
+        </div>
+      </div>
+    </div>
   );
 }
