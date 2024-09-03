@@ -1,28 +1,34 @@
-// 1_7_3 Extracting a list item component 
+// 1_7_4 List with a separator
 /*
-  Этот компонент RecipeList содержит два вложенных вызова map. Чтобы упростить его, извлеките из него компонент Recipe, который будет принимать пропсы id, name и ingredients. Где вы разместите внешний key и почему?.
+Этот пример отображает знаменитое хайку Кацусики Хокусая, каждая строка которого обернута в тег <p>. Ваша задача — вставить разделитель <hr /> между каждым абзацем. Ваша результирующая структура должна выглядеть следующим образом:
+
+<article>
+    <p>I write, erase, rewrite</p>
+    <hr />
+    <p>Erase again, and then</p>
+    <hr />
+    <p>A poppy blooms.</p>
+</article>
+
+  В хайку всего три строки, но ваше решение должно работать с любым количеством строк. Обратите внимание, что элементы <hr /> появляются только между элементами <p>, а не в начале или конце!
+
+  Это редкий случай, когда индекс в качестве ключа допустим, потому что строки стихотворения никогда не будут перестраиваться.
 */
 
-import { recipes } from './data';
+const poem = {
+  lines: [
+      'I write, erase, rewrite',
+      'Erase again, and then',
+      'A poppy blooms.',
+  ],
+};
 
-export default function RecipeList() {
-    return (
-        <div>
-            <h1>Recipes</h1>
-            {recipes.map((recipe) => (
-                <div key={recipe.id}>
-                    <h2>{recipe.name}</h2>
-                    <ul>
-                        {recipe.ingredients.map(
-                            (ingredient) => (
-                                <li key={ingredient}>
-                                    {ingredient}
-                                </li>
-                            )
-                        )}
-                    </ul>
-                </div>
-            ))}
-        </div>
-    );
+export default function Poem() {
+  return (
+      <article>
+          {poem.lines.map((line, index) => (
+              <p key={index}>{line}</p>
+          ))}
+      </article>
+  );
 }
