@@ -1,34 +1,31 @@
-// 1_8_2 Fix a broken profile
+// 1_8_3 Fix a broken story tray
 /*
-  Два компонента Profile отображаются бок о бок с разными данными. Нажмите "Свернуть" на первом профиле, а затем "Развернуть" его. Вы заметите, что теперь в обоих профилях отображается один и тот же человек. Это ошибка.
+  Генеральный директор вашей компании просит вас добавить "истории" в ваше приложение онлайн-часов, и вы не можете отказать. Вы написали компонент StoryTray, который принимает список stories, за которым следует заполнитель "Create Story".
 
-  Найдите причину ошибки и исправьте ее.
-
-  Код ошибки находится в файле Profile.js. Убедитесь, что вы прочитали его сверху вниз!
+  Вы реализовали заполнитель "Create Story", поместив еще одну фальшивую историю в конец массива stories, который вы получаете в качестве пропса. Но по какой-то причине "Create Story" появляется более одного раза. Исправьте эту проблему.
 */
 
-import Profile from './Profile';
+export interface Story {
+  id: string;
+  label: string;
+} 
 
-export type Person = {
-    imageId: string;
-    name: string;
-};
+const stories: Story[] = [];
+export default function Wrapper(){
+  return <StoryTray stories={stories}/>;
+}
 
-export default function App() {
-    return (
-        <>
-            <Profile
-                person={{
-                    imageId: 'lrWQx8l',
-                    name: 'Subrahmanyan Chandrasekhar',
-                }}
-            />
-            <Profile
-                person={{
-                    imageId: 'MK3eW3A',
-                    name: 'Creola Katherine Johnson',
-                }}
-            />
-        </>
-    );
+ function StoryTray({ stories }: { stories: Story[] }) {
+  stories.push({
+      id: 'create',
+      label: 'Create Story',
+  });
+
+  return (
+      <ul>
+          {stories.map((story) => (
+              <li key={story.id}>{story.label}</li>
+          ))}
+      </ul>
+  );
 }
