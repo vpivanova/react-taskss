@@ -1,34 +1,25 @@
-// 1_7_4 List with a separator
+// 1_8_1 Fix a broken clock
 /*
-Этот пример отображает знаменитое хайку Кацусики Хокусая, каждая строка которого обернута в тег <p>. Ваша задача — вставить разделитель <hr /> между каждым абзацем. Ваша результирующая структура должна выглядеть следующим образом:
+  Этот компонент пытается установить CSS-класс <h1> на night в период с полуночи до шести часов утра, и на day во все остальное время. Однако это не срабатывает. Можете ли вы исправить этот компонент?
 
-<article>
-    <p>I write, erase, rewrite</p>
-    <hr />
-    <p>Erase again, and then</p>
-    <hr />
-    <p>A poppy blooms.</p>
-</article>
+  Вы можете проверить, работает ли ваше решение, временно изменив часовой пояс компьютера. Когда текущее время находится между полуночью и шестью часами утра, часы должны иметь инвертированные цвета!
 
-  В хайку всего три строки, но ваше решение должно работать с любым количеством строк. Обратите внимание, что элементы <hr /> появляются только между элементами <p>, а не в начале или конце!
-
-  Это редкий случай, когда индекс в качестве ключа допустим, потому что строки стихотворения никогда не будут перестраиваться.
+  Рендеринг — это вычисление, он не должен пытаться "делать" вещи. Можете ли вы выразить ту же идею по-другому?
 */
 
-const poem = {
-  lines: [
-      'I write, erase, rewrite',
-      'Erase again, and then',
-      'A poppy blooms.',
-  ],
-};
-
-export default function Poem() {
-  return (
-      <article>
-          {poem.lines.map((line, index) => (
-              <p key={index}>{line}</p>
-          ))}
-      </article>
-  );
+export default function ClockWrapper() {
+  return <Clock time={new Date()} />;
 }
+
+function Clock({ time }: { time: Date }) {
+  const hours = time.getHours();
+  const elem = document.getElementById("time");
+  if (elem)
+    if (hours >= 0 && hours <= 6) {
+      elem.className = "night";
+    } else {
+      elem.className = "day";
+    }
+  return <h1 id="time">{time.toLocaleTimeString()}</h1>;
+}
+
