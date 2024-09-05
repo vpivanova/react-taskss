@@ -27,5 +27,15 @@
 - 912be2f 1_5_1 Extract a component
 - fa74a99 1_5_2 Adjust the image size based on a prop
 - b8a5668 1_5_3 Passing JSX in a children prop
+- dd86926 1_6_1 Show an icon for incomplete items with ? :
+- 12787dc 1_6_2 Show the item importance with &&
+- eb0a62c 1_6_3 Refactor a series of ? : to if and variables
+- a30c6f2 1_7_1 Splitting a list in two
+- 1da860f 1_7_2 Nested lists in one component
+- 6d2cef7 1_7_3 Extracting a list item component
+- c31e5e7 1_7_4 List with a separator
+- aa81cfb 1_8_1 Fix a broken clock
+- d58363d 1_8_2 Fix a broken profile
+- 7f62b92 1_8_3 Fix a broken story tray     
 
 Посмотреть список коммитов (задач): ```git log  --pretty=oneline --abbrev-commit```.
