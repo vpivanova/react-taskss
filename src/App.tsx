@@ -1,41 +1,35 @@
-// 2_2_2 Fix stuck form inputs
+// 2_2_3 Fix a crash
 /*
-  Когда вы вводите текст в поля ввода, ничего не появляется. Как будто входные значения "застряли" с пустыми строками. "Значение" первого <input> установлено так, чтобы всегда соответствовать переменной firstName, а "значение" второго <input> установлено так, чтобы всегда соответствовать переменной lastName. Это правильно. Оба входа имеют обработчики событий onChange, которые пытаются обновить переменные на основе последнего введенного пользователем значения (e.target.value). Однако переменные, похоже, не "запоминают" свои значения между повторными рендерингами. Исправьте это, используя вместо них переменные состояния.
+  Вот небольшая форма, которая должна позволить пользователю оставить отзыв. Когда отзыв отправлен, предполагается отобразить сообщение с благодарностью. Однако при этом происходит сбой с сообщением об ошибке: "Rendered lesser hooks than expected". Можете ли вы заметить ошибку и исправить ее?
 */
 
-export default function Form() {
-  let firstName = '';
-  let lastName = '';
+import { useState } from 'react';
 
-  function handleFirstNameChange(e: any) {
-      firstName = e.target.value;
-  }
-
-  function handleLastNameChange(e: any) {
-      lastName = e.target.value;
-  }
-
-  function handleReset() {
-      firstName = '';
-      lastName = '';
-  }
-
-  return (
-      <form onSubmit={(e) => e.preventDefault()}>
-          <input
-              placeholder="First name"
-              value={firstName}
-              onChange={handleFirstNameChange}
-          />
-          <input
-              placeholder="Last name"
-              value={lastName}
-              onChange={handleLastNameChange}
-          />
-          <h1>
-              Hi, {firstName} {lastName}
-          </h1>
-          <button onClick={handleReset}>Reset</button>
-      </form>
-  );
+export default function FeedbackForm() {
+    const [isSent, setIsSent] = useState(false);
+    if (isSent) {
+        return <h1>Thank you!</h1>;
+    } else {
+        // eslint-disable-next-line
+        const [message, setMessage] = useState('');
+        return (
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    alert(`Sending: "${message}"`);
+                    setIsSent(true);
+                }}
+            >
+                <textarea
+                    placeholder="Message"
+                    value={message}
+                    onChange={(e) =>
+                        setMessage(e.target.value)
+                    }
+                />
+                <br />
+                <button type="submit">Send</button>
+            </form>
+        );
+    }
 }
