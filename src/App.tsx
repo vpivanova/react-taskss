@@ -1,42 +1,41 @@
-// 2_2_1 Complete the gallery 
+// 2_2_2 Fix stuck form inputs
 /*
-  При нажатии кнопки "Next" на последней скульптуре происходит сбой кода. Исправьте логику, чтобы предотвратить сбой. Вы можете сделать это, добавив дополнительную логику в обработчик события или отключив кнопку, когда действие невозможно.
-
-  После устранения сбоя добавьте кнопку "Предыдущая", которая показывает предыдущую скульптуру. Она не должна разбиваться на первой скульптуре.
+  Когда вы вводите текст в поля ввода, ничего не появляется. Как будто входные значения "застряли" с пустыми строками. "Значение" первого <input> установлено так, чтобы всегда соответствовать переменной firstName, а "значение" второго <input> установлено так, чтобы всегда соответствовать переменной lastName. Это правильно. Оба входа имеют обработчики событий onChange, которые пытаются обновить переменные на основе последнего введенного пользователем значения (e.target.value). Однако переменные, похоже, не "запоминают" свои значения между повторными рендерингами. Исправьте это, используя вместо них переменные состояния.
 */
 
-import { useState } from 'react';
-import { sculptureList } from './data';
+export default function Form() {
+  let firstName = '';
+  let lastName = '';
 
+  function handleFirstNameChange(e: any) {
+      firstName = e.target.value;
+  }
 
-export default function Gallery() {
-    const [index, setIndex] = useState(0);
-    const [showMore, setShowMore] = useState(false);
+  function handleLastNameChange(e: any) {
+      lastName = e.target.value;
+  }
 
-    function handleNextClick() {
-        setIndex(index + 1);
-    }
+  function handleReset() {
+      firstName = '';
+      lastName = '';
+  }
 
-    function handleMoreClick() {
-        setShowMore(!showMore);
-    }
-
-    let sculpture = sculptureList[index];
-    return (
-        <>
-            <button onClick={handleNextClick}>Next</button>
-            <h2>
-                <i>{sculpture.name} </i>
-                by {sculpture.artist}
-            </h2>
-            <h3>
-                ({index + 1} of {sculptureList.length})
-            </h3>
-            <button onClick={handleMoreClick}>
-                {showMore ? 'Hide' : 'Show'} details
-            </button>
-            {showMore && <p>{sculpture.description}</p>}
-            <img src={sculpture.url} alt={sculpture.alt} />
-        </>
-    );
+  return (
+      <form onSubmit={(e) => e.preventDefault()}>
+          <input
+              placeholder="First name"
+              value={firstName}
+              onChange={handleFirstNameChange}
+          />
+          <input
+              placeholder="Last name"
+              value={lastName}
+              onChange={handleLastNameChange}
+          />
+          <h1>
+              Hi, {firstName} {lastName}
+          </h1>
+          <button onClick={handleReset}>Reset</button>
+      </form>
+  );
 }
