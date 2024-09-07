@@ -1,35 +1,21 @@
-// 2_2_3 Fix a crash
+// 2_2_4 Remove unnecessary state
 /*
-  Вот небольшая форма, которая должна позволить пользователю оставить отзыв. Когда отзыв отправлен, предполагается отобразить сообщение с благодарностью. Однако при этом происходит сбой с сообщением об ошибке: "Rendered lesser hooks than expected". Можете ли вы заметить ошибку и исправить ее?
+  При нажатии на кнопку этот пример должен запросить имя пользователя, а затем вывести приветствие. Вы попытались использовать state для хранения имени, но по какой-то причине всегда выводится "Hello, !".
+
+  Чтобы исправить этот код, удалите ненужную переменную state (мы обсудим почему это не сработало позже).
+
+  Можете ли вы объяснить, почему эта переменная состояния была ненужной?
 */
 
 import { useState } from 'react';
 
 export default function FeedbackForm() {
-    const [isSent, setIsSent] = useState(false);
-    if (isSent) {
-        return <h1>Thank you!</h1>;
-    } else {
-        // eslint-disable-next-line
-        const [message, setMessage] = useState('');
-        return (
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    alert(`Sending: "${message}"`);
-                    setIsSent(true);
-                }}
-            >
-                <textarea
-                    placeholder="Message"
-                    value={message}
-                    onChange={(e) =>
-                        setMessage(e.target.value)
-                    }
-                />
-                <br />
-                <button type="submit">Send</button>
-            </form>
-        );
+    const [name, setName] = useState('');
+
+    function handleClick() {
+        setName(prompt('What is your name?')??"");
+        alert(`Hello, ${name}!`);
     }
+
+    return <button onClick={handleClick}>Greet</button>;
 }
