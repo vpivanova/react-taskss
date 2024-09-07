@@ -1,21 +1,33 @@
-// 2_2_4 Remove unnecessary state
+// 2_4_1 Implement a traffic light 
 /*
-  При нажатии на кнопку этот пример должен запросить имя пользователя, а затем вывести приветствие. Вы попытались использовать state для хранения имени, но по какой-то причине всегда выводится "Hello, !".
+  Здесь представлен компонент светофора для пешеходного перехода, который включается при нажатии на кнопку.
 
-  Чтобы исправить этот код, удалите ненужную переменную state (мы обсудим почему это не сработало позже).
+  Добавьте alert в обработчик нажатия. Когда свет зеленый и говорит "Идти", щелчок по кнопке должен говорить "Следующая остановка". Когда свет красный и говорит "Стоп", нажатие на кнопку должно говорить "Следующим будет идти".
 
-  Можете ли вы объяснить, почему эта переменная состояния была ненужной?
+  Есть ли разница в том, поместить ли alert до или после вызова setWalk?
 */
 
 import { useState } from 'react';
 
-export default function FeedbackForm() {
-    const [name, setName] = useState('');
+export default function TrafficLight() {
+    const [walk, setWalk] = useState(true);
 
     function handleClick() {
-        setName(prompt('What is your name?')??"");
-        alert(`Hello, ${name}!`);
+        setWalk(!walk)
     }
 
-    return <button onClick={handleClick}>Greet</button>;
+    return (
+        <>
+            <button onClick={handleClick}>
+                Change to {walk ? 'Stop' : 'Walk'}
+            </button>
+            <h1
+                style={{
+                    color: walk ? 'darkgreen' : 'darkred',
+                }}
+            >
+                {walk ? 'Walk' : 'Stop'}
+            </h1>
+        </>
+    );
 }
