@@ -1,33 +1,35 @@
-// 2_4_1 Implement a traffic light 
+// 2_5_1 Fix a request counter 
 /*
-  Здесь представлен компонент светофора для пешеходного перехода, который включается при нажатии на кнопку.
+    Вы работаете над приложением для рынка предметов искусства, которое позволяет пользователю одновременно отправлять несколько заказов на предметы искусства. Каждый раз, когда пользователь нажимает кнопку "Купить", счетчик "Отложенные" должен увеличиваться на единицу. Через три секунды счетчик "Отложенные" должен уменьшиться, а счетчик "Выполненные" - увеличиться.
 
-  Добавьте alert в обработчик нажатия. Когда свет зеленый и говорит "Идти", щелчок по кнопке должен говорить "Следующая остановка". Когда свет красный и говорит "Стоп", нажатие на кнопку должно говорить "Следующим будет идти".
+    Однако счетчик "Отложенные" ведет себя не так, как задумано. Когда вы нажимаете кнопку "Купить", он уменьшается до -1 (что не должно быть возможно!). А если дважды нажать кнопку "Быстро", то оба счетчика ведут себя непредсказуемо.
 
-  Есть ли разница в том, поместить ли alert до или после вызова setWalk?
+    Почему так происходит? Исправьте оба счетчика.
 */
-
 import { useState } from 'react';
 
-export default function TrafficLight() {
-    const [walk, setWalk] = useState(true);
+export default function RequestTracker() {
+    const [pending, setPending] = useState(0);
+    const [completed, setCompleted] = useState(0);
 
-    function handleClick() {
-        setWalk(!walk)
+    async function handleClick() {
+        setPending(pending + 1);        
+        await delay(3000);
+        setPending(pending - 1);
+        setCompleted(completed + 1);
     }
 
     return (
         <>
-            <button onClick={handleClick}>
-                Change to {walk ? 'Stop' : 'Walk'}
-            </button>
-            <h1
-                style={{
-                    color: walk ? 'darkgreen' : 'darkred',
-                }}
-            >
-                {walk ? 'Walk' : 'Stop'}
-            </h1>
+            <h3>Отложенные: {pending}</h3>
+            <h3>Выполненные: {completed}</h3>
+            <button onClick={handleClick}>Купить</button>
         </>
     );
+}
+
+function delay(ms: number) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 }
