@@ -1,58 +1,59 @@
-// 2_6_1 Fix incorrect state updates 
+// 2_6_2 Find and fix the mutation 
 /*
-    В этой форме есть несколько ошибок. Несколько раз нажмите на кнопку, увеличивающую оценку. Заметьте, что он не увеличивается. Затем отредактируйте имя и фамилию и заметите, что оценка внезапно "подхватила" ваши изменения. Наконец, отредактируйте фамилию, и заметите, что оценка полностью исчезла.
+    Имеется перетаскиваемый ящик на статичном фоне. Вы можете изменить цвет поля с помощью кнопки select.
 
-    Ваша задача — исправить все эти ошибки. Исправляя их, объясните, почему происходит каждая из них.
+    Но есть ошибка. Если сначала переместить ящик, а затем изменить его цвет, фон (который не должен двигаться!) "перепрыгнет" на позицию ящика. Но этого не должно произойти: параметр position у Background установлен в initialPosition, что равно { x: 0, y: 0 }. Почему фон перемещается после изменения цвета?
+
+    Найдите ошибку и исправьте ее.
 */
 
 import { useState } from 'react';
+import Background from './Background';
+import Box from './Box';
 
-export default function Scoreboard() {
-    const [player, setPlayer] = useState({
-        firstName: 'Ranjani',
-        lastName: 'Shettar',
-        score: 10,
+export type Position = { x: number; y: number };
+
+const initialPosition = {
+    x: 0,
+    y: 0,
+};
+
+export default function Canvas() {
+    const [shape, setShape] = useState({
+        color: 'orange',
+        position: initialPosition,
     });
 
-    function handlePlusClick() {
-        player.score++;
+    function handleMove(dx: number, dy: number) {
+        shape.position.x += dx;
+        shape.position.y += dy;
     }
 
-    function handleFirstNameChange(e: any) {
-        setPlayer({
-            ...player,
-            firstName: e.target.value,
+    function handleColorChange(e: any) {
+        setShape({
+            ...shape,
+            color: e.target.value,
         });
-    }
-
-    function handleLastNameChange(e: any) {
-        setPlayer({
-            lastName: e.target.value,
-        } as any);
     }
 
     return (
         <>
-            <label>
-                Score: <b>{player.score}</b>{' '}
-                <button onClick={handlePlusClick}>
-                    +1
-                </button>
-            </label>
-            <label>
-                First name:
-                <input
-                    value={player.firstName}
-                    onChange={handleFirstNameChange}
-                />
-            </label>
-            <label>
-                Last name:
-                <input
-                    value={player.lastName}
-                    onChange={handleLastNameChange}
-                />
-            </label>
+            <select
+                value={shape.color}
+                onChange={handleColorChange}
+            >
+                <option value="orange">orange</option>
+                <option value="lightpink">lightpink</option>
+                <option value="aliceblue">aliceblue</option>
+            </select>
+            <Background position={initialPosition} />
+            <Box
+                color={shape.color}
+                position={shape.position}
+                onMove={handleMove}
+            >
+                Drag me!
+            </Box>
         </>
     );
 }
