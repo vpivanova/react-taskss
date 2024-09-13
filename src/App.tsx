@@ -1,35 +1,81 @@
-// 2_5_1 Fix a request counter 
+// 2_5_2 Implement the state queue yourself  
 /*
-    Вы работаете над приложением для рынка предметов искусства, которое позволяет пользователю одновременно отправлять несколько заказов на предметы искусства. Каждый раз, когда пользователь нажимает кнопку "Купить", счетчик "Отложенные" должен увеличиваться на единицу. Через три секунды счетчик "Отложенные" должен уменьшиться, а счетчик "Выполненные" - увеличиться.
+    В этом задании вам предстоит реализовать крошечную часть React с нуля! Это не так сложно, как кажется.
 
-    Однако счетчик "Отложенные" ведет себя не так, как задумано. Когда вы нажимаете кнопку "Купить", он уменьшается до -1 (что не должно быть возможно!). А если дважды нажать кнопку "Быстро", то оба счетчика ведут себя непредсказуемо.
+    Посмотрите результат работы программы. Обратите внимание, что в ней показаны четыре тестовых случая. Они соответствуют примерам, которые вы видели ранее на этой странице. Ваша задача — реализовать функцию getFinalState так, чтобы она возвращала правильный результат для каждого из этих случаев. Если вы реализуете функцию правильно, все четыре теста должны пройти.
 
-    Почему так происходит? Исправьте оба счетчика.
+    Вы получите два аргумента: baseState — начальное состояние (например, 0), и queue — массив, содержащий смесь чисел (например, 5) и функций обновления (например, n => n + 1) в порядке их добавления.
+
+    Ваша задача — вернуть конечное состояние, точно такое же, как в тестах на странице с результатом работы программы!
 */
-import { useState } from 'react';
+import { getFinalState } from './processQueue';
 
-export default function RequestTracker() {
-    const [pending, setPending] = useState(0);
-    const [completed, setCompleted] = useState(0);
+export type Que = number | ((n: number) => number);
 
-    async function handleClick() {
-        setPending(pending + 1);        
-        await delay(3000);
-        setPending(pending - 1);
-        setCompleted(completed + 1);
-    }
+function increment(n: number) {
+    return n + 1;
+}
+increment.toString = () => 'n => n+1';
 
+export default function App() {
     return (
         <>
-            <h3>Отложенные: {pending}</h3>
-            <h3>Выполненные: {completed}</h3>
-            <button onClick={handleClick}>Купить</button>
+            <TestCase
+                baseState={0}
+                queue={[1, 1, 1]}
+                expected={1}
+            />
+            <hr />
+            <TestCase
+                baseState={0}
+                queue={[increment, increment, increment]}
+                expected={3}
+            />
+            <hr />
+            <TestCase
+                baseState={0}
+                queue={[5, increment]}
+                expected={6}
+            />
+            <hr />
+            <TestCase
+                baseState={0}
+                queue={[5, increment, 42]}
+                expected={42}
+            />
         </>
     );
 }
 
-function delay(ms: number) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
+function TestCase(
+    { baseState, queue, expected }: {
+        baseState: number;
+        queue: Que[];
+        expected: number;
+    }) {
+    const actual = getFinalState(baseState, queue);
+    return (
+        <>
+            <p>
+                Base state: <b>{baseState}</b>
+            </p>
+            <p>
+                Queue: <b>[{queue.join(', ')}]</b>
+            </p>
+            <p>
+                Expected result: <b>{expected}</b>
+            </p>
+            <p
+                style={{
+                    color:
+                        actual === expected
+                            ? 'green'
+                            : 'red',
+                }}
+            >
+                Your result: <b>{actual}</b> (
+                {actual === expected ? 'correct' : 'wrong'})
+            </p>
+        </>
+    );
 }
