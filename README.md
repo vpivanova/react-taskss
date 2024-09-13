@@ -38,4 +38,23 @@
 - d58363d 1_8_2 Fix a broken profile
 - 7f62b92 1_8_3 Fix a broken story tray     
 
+#### Добавление интерактивности в приложение
+
+- a9894c7 2_1_1 Fix an event handler
+- 382807e 2_1_2 Wire up the events
+- 126f7df 2_2_1 Complete the gallery
+- d59c7a0 2_2_2 Fix stuck form inputs
+- e97cc54 2_2_3 Fix a crash
+- aecc64f 2_2_4 Remove unnecessary state
+- d5b74ce 2_4_1 Implement a traffic light
+- 27ae8ed 2_5_2 Implement the state queue yourself
+- 79190dd 2_5_1 Fix a request counter
+- cdce474 2_6_1 Fix incorrect state updates
+- 6d076f6 2_6_2 Find and fix the mutation
+- 44ddf04 2_6_3 Update an object with Immer
+- a2ad3a2 2_7_1 Update an item in the shopping cart
+- 4767858 2_7_2 Remove an item from the shopping cart
+- 97920ca 2_7_3 Fix the mutations using non-mutative methods
+- 278cefd 2_7_4 Fix the mutations using Immer
+
 Посмотреть список коммитов (задач): ```git log  --pretty=oneline --abbrev-commit```.
