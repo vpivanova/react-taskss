@@ -1,9 +1,10 @@
-// 2_7_3 Fix the mutations using non-mutative methods  
+// 2_7_4 Fix the mutations using Immer  
 /*
-    В этом примере все обработчики событий в App.js используют мутацию. В результате редактирование и удаление todos не работает. Перепишите handleAddTodo, handleChangeTodo и handleDeleteTodo, чтобы они использовали немутационные методы:
+    В этом примере все обработчики событий в App.js используют мутацию. В результате редактирование и удаление todos не работает. Перепишите handleAddTodo, handleChangeTodo и handleDeleteTodo с помощью Immer
 */
 
 import { useState } from 'react';
+import { useImmer } from 'use-immer';
 import AddTodo from './AddTodo';
 import TaskList from './TaskList';
 
