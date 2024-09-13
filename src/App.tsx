@@ -1,61 +1,49 @@
-// 2_6_3 Update an object with Immer 
+// 2_7_1 Update an item in the shopping cart 
 /*
-    Имеется перетаскиваемый ящик на статичном фоне. Вы можете изменить цвет поля с помощью кнопки select.
-
-    Но есть ошибка. Если сначала переместить ящик, а затем изменить его цвет, фон (который не должен двигаться!) "перепрыгнет" на позицию ящика. Но этого не должно произойти: параметр position у Background установлен в initialPosition, что равно { x: 0, y: 0 }. Почему фон перемещается после изменения цвета?
-
-    На этот раз исправьте мутацию, используя Immer. Для вашего удобства функция useImmer уже импортирована, поэтому вам нужно изменить переменную состояния shape, чтобы использовать ее.
+    Заполните логику handleIncreaseClick так, чтобы нажатие "+" увеличивало соответствующее число.
 */
 
 import { useState } from 'react';
-import { useImmer } from 'use-immer';
-import Background from './Background';
-import Box from './Box';
 
-export type Position = { x: number; y: number };
+const initialProducts = [
+    {
+        id: 0,
+        name: 'Baklava',
+        count: 1,
+    },
+    {
+        id: 1,
+        name: 'Cheese',
+        count: 5,
+    },
+    {
+        id: 2,
+        name: 'Spaghetti',
+        count: 2,
+    },
+];
 
-const initialPosition = {
-    x: 0,
-    y: 0,
-};
+export default function ShoppingCart() {
+    const [products, setProducts] = useState(
+        initialProducts
+    );
 
-export default function Canvas() {
-    const [shape, setShape] = useState({
-        color: 'orange',
-        position: initialPosition,
-    });
-
-    function handleMove(dx: number, dy: number) {
-        shape.position.x += dx;
-        shape.position.y += dy;
-    }
-
-    function handleColorChange(e: any) {
-        setShape({
-            ...shape,
-            color: e.target.value,
-        });
-    }
+    function handleIncreaseClick(productId: number) { }
 
     return (
-        <>
-            <select
-                value={shape.color}
-                onChange={handleColorChange}
-            >
-                <option value="orange">orange</option>
-                <option value="lightpink">lightpink</option>
-                <option value="aliceblue">aliceblue</option>
-            </select>
-            <Background position={initialPosition} />
-            <Box
-                color={shape.color}
-                position={shape.position}
-                onMove={handleMove}
-            >
-                Drag me!
-            </Box>
-        </>
+        <ul>
+            {products.map((product) => (
+                <li key={product.id}>
+                    {product.name} (<b>{product.count}</b>)
+                    <button
+                        onClick={() => {
+                            handleIncreaseClick(product.id);
+                        }}
+                    >
+                        +
+                    </button>
+                </li>
+            ))}
+        </ul>
     );
 }
-
