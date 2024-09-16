@@ -1,60 +1,18 @@
-// 2_7_4 Fix the mutations using Immer  
+// 3_1_1 Add and remove a CSS class
 /*
-    В этом примере все обработчики событий в App.js используют мутацию. В результате редактирование и удаление todos не работает. Перепишите handleAddTodo, handleChangeTodo и handleDeleteTodo с помощью Immer
+    Сделайте так, чтобы щелчок на картинке удалял CSS-класс background--active из внешнего <div>, но добавлял класс picture--active к <img>. Повторный щелчок по фону восстановит исходные CSS-классы.
+
+    Визуально вы должны увидеть, что щелчок на изображении удаляет фиолетовый фон и выделяет границу изображения. Щелчок за пределами изображения выделяет фон, но убирает выделение границы изображения.
 */
 
-import { useState } from 'react';
-import { useImmer } from 'use-immer';
-import AddTodo from './AddTodo';
-import TaskList from './TaskList';
-
-export type Todo = {
-    id: number;
-    title: string;
-    done: boolean;
-}
-
-let nextId = 3;
-const initialTodos = [
-    { id: 0, title: 'Buy milk', done: true },
-    { id: 1, title: 'Eat tacos', done: false },
-    { id: 2, title: 'Brew tea', done: false },
-];
-
-export default function TaskApp() {
-    const [todos, setTodos] = useState(initialTodos);
-
-    function handleAddTodo(title: string) {
-        todos.push({
-            id: nextId++,
-            title: title,
-            done: false,
-        });
-    }
-
-    function handleChangeTodo(nextTodo: Todo) {
-        const todo = todos.find(
-            (t) => t.id === nextTodo.id
-        )!!;
-        todo.title = nextTodo.title;
-        todo.done = nextTodo.done;
-    }
-
-    function handleDeleteTodo(todoId: number) {
-        const index = todos.findIndex(
-            (t) => t.id === todoId
-        );
-        todos.splice(index, 1);
-    }
-
+export default function Picture() {
     return (
-        <>
-            <AddTodo onAddTodo={handleAddTodo} />
-            <TaskList
-                todos={todos}
-                onChangeTodo={handleChangeTodo}
-                onDeleteTodo={handleDeleteTodo}
+        <div className="background background--active">
+            <img
+                className="picture"
+                alt="Rainbow houses in Kampung Pelangi, Indonesia"
+                src="https://i.imgur.com/5qwVYb1.jpeg"
             />
-        </>
+        </div>
     );
 }
