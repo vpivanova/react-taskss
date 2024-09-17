@@ -1,54 +1,49 @@
-// 3_2_3 Fix the disappearing selection 
+// 3_2_4 Implement multiple selection
 /*
-    Выводится список писем, которые хранятся в переменной состояния letters. Когда вы наводите курсор или фокус на определенное письмо - оно выделяется (подсвечивается). Текущее выделенное письмо хранится в переменной состояния highlightedLetter. Вы можете "выделять" и "снимать выделение" отдельных писем, что приводит к обновлению массива letters в состоянии.
+    В этом примере каждое Letter имеет свойство isSelected и обработчик onToggle, который отмечает его как выбранное. Это работает, но состояние хранится как selectedId (либо null, либо ID), поэтому в каждый момент времени может быть выбрано только одно письмо.
 
-    Этот код работает, но есть небольшой сбой в пользовательском интерфейсе. Когда вы нажимаете "Star" или "Unstar", подсветка на мгновение исчезает. Однако она снова появляется, как только вы перемещаете указатель или переключаетесь на другое письмо с клавиатуры. Почему это происходит? Исправьте это, чтобы подсветка не исчезала после нажатия кнопки.
+    Измените структуру состояния для поддержки множественного выбора (Как бы вы его структурировали? Подумайте об этом перед написанием кода). Каждый флажок должен стать независимым от других. Щелчок по выбранному письму должен снимать флажок. Наконец, нижний колонтитул должен показывать правильное количество выбранных элементов.
 */
 
 
 import { useState } from 'react';
-import { initialLetters, LetterType } from './data.js';
+import { letters } from './data.js';
 import Letter from './Letter.js';
 
 export default function MailClient() {
-    const [letters, setLetters] = useState(initialLetters);
-    const [highlightedLetter, setHighlightedLetter] =
-        useState<LetterType | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-    function handleHover(letter: LetterType) {
-        setHighlightedLetter(letter);
-    }
+  // TODO: allow multiple selection
+  const selectedCount = 1;
 
-    function handleStar(starred: LetterType) {
-        setLetters(letters.map(letter => {
-            if (letter.id === starred.id) {
-                return {
-                    ...letter,
-                    isStarred: !letter.isStarred
-                };
-            } else {
-                return letter;
+  function handleToggle(toggledId: number) {
+    // TODO: allow multiple selection
+    setSelectedId(toggledId);
+  }
+
+  return (
+    <>
+      <h2>Inbox</h2>
+      <ul>
+        {letters.map(letter => (
+          <Letter
+            key={letter.id}
+            letter={letter}
+            isSelected={
+              // TODO: allow multiple selection
+              letter.id === selectedId
             }
-        }));
-    }
-
-    return (
-        <>
-            <h2>Inbox</h2>
-            <ul>
-                {letters.map(letter => (
-                    <Letter
-                        key={letter.id}
-                        letter={letter}
-                        isHighlighted={
-                            letter === highlightedLetter
-                        }
-                        onHover={handleHover}
-                        onToggleStar={handleStar}
-                    />
-                ))}
-            </ul>
-        </>
-    );
+            onToggle={handleToggle}
+          />
+        ))}
+        <hr />
+        <p>
+          <b>
+            You selected {selectedCount} letters
+          </b>
+        </p>
+      </ul>
+    </>
+  );
 }
 

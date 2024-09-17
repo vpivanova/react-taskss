@@ -4,7 +4,7 @@ export type LetterType = {
     isStarred: boolean
 }
 
-export const initialLetters = [{
+export const letters = [{
     id: 0,
     subject: 'Ready for adventure?',
     isStarred: true,
