@@ -1,37 +1,77 @@
-// 3_2_1 Fix a component that’s not updating 
+// 3_2_2 Fix a broken packing list
 /*
-    Компонент Clock получает два пропса: color и time. Когда вы выбираете другой цвет в поле выбора, компонент Clock получает другой пропс color от своего родительского компонента. Однако по какой-то причине отображаемый цвет не обновляется. Почему? Устраните проблему.
+    Этот упаковочный лист имеет нижний колонтитул, который показывает, сколько предметов упаковано, и сколько предметов в целом. Поначалу кажется, что это работает, но на самом деле это ошибка. Например, если вы пометите предмет как упакованный, а затем удалите его, счетчик не будет обновлен правильно. Исправьте счетчик так, чтобы он всегда был корректным.
 */
 
 
-import { useState, useEffect } from 'react';
-import Clock from './Clock';
+import { useState } from 'react';
+import AddItem from './AddItem.js';
+import PackingList from './PackingList.js';
 
-function useTime() {
-  const [time, setTime] = useState(() => new Date());
-  useEffect(() => {
-    const id = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(id);
-  }, []);
-  return time;
+export type Item = {
+  id: number,
+  title: string,
+  packed: boolean
 }
 
-export default function App() {
-  const time = useTime();
-  const [color, setColor] = useState('lightcoral');
+let nextId = 3;
+const initialItems = [
+  { id: 0, title: 'Warm socks', packed: true },
+  { id: 1, title: 'Travel journal', packed: false },
+  { id: 2, title: 'Watercolors', packed: false },
+];
+
+export default function TravelPlan() {
+  const [items, setItems] = useState(initialItems);
+  const [total, setTotal] = useState(3);
+  const [packed, setPacked] = useState(1);
+
+  function handleAddItem(title: string) {
+    setTotal(total + 1);
+    setItems([
+      ...items,
+      {
+        id: nextId++,
+        title: title,
+        packed: false
+      }
+    ]);
+  }
+
+  function handleChangeItem(nextItem: Item) {
+    if (nextItem.packed) {
+      setPacked(packed + 1);
+    } else {
+      setPacked(packed - 1);
+    }
+    setItems(items.map(item => {
+      if (item.id === nextItem.id) {
+        return nextItem;
+      } else {
+        return item;
+      }
+    }));
+  }
+
+  function handleDeleteItem(itemId: number) {
+    setTotal(total - 1);
+    setItems(
+      items.filter(item => item.id !== itemId)
+    );
+  }
+
   return (
-    <div>
-      <p>
-        Pick a color:{' '}
-        <select value={color} onChange={e => setColor(e.target.value)}>
-          <option value="lightcoral">lightcoral</option>
-          <option value="midnightblue">midnightblue</option>
-          <option value="rebeccapurple">rebeccapurple</option>
-        </select>
-      </p>
-      <Clock color={color} time={time.toLocaleTimeString()} />
-    </div>
+    <>  
+      <AddItem
+        onAddItem={handleAddItem}
+      />
+      <PackingList
+        items={items}
+        onChangeItem={handleChangeItem}
+        onDeleteItem={handleDeleteItem}
+      />
+      <hr />
+      <b>{packed} out of {total} packed!</b>
+    </>
   );
 }
