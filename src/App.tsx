@@ -1,49 +1,35 @@
-// 3_2_4 Implement multiple selection
+// 3_2_5 Synced inputs 
 /*
-    В этом примере каждое Letter имеет свойство isSelected и обработчик onToggle, который отмечает его как выбранное. Это работает, но состояние хранится как selectedId (либо null, либо ID), поэтому в каждый момент времени может быть выбрано только одно письмо.
-
-    Измените структуру состояния для поддержки множественного выбора (Как бы вы его структурировали? Подумайте об этом перед написанием кода). Каждый флажок должен стать независимым от других. Щелчок по выбранному письму должен снимать флажок. Наконец, нижний колонтитул должен показывать правильное количество выбранных элементов.
+  Эти два входа являются независимыми. Сделайте их синхронизированными: редактирование одного входа должно обновить другой вход с тем же текстом, и наоборот.
 */
 
-
 import { useState } from 'react';
-import { letters } from './data.js';
-import Letter from './Letter.js';
 
-export default function MailClient() {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+export default function SyncedInputs() {
+  return (
+    <>
+      <Input label="First input" />
+      <Input label="Second input" />
+    </>
+  );
+}
 
-  // TODO: allow multiple selection
-  const selectedCount = 1;
+function Input({ label }: { label: string }) {
+  const [text, setText] = useState('');
 
-  function handleToggle(toggledId: number) {
-    // TODO: allow multiple selection
-    setSelectedId(toggledId);
+  function handleChange(e) {
+    setText(e.target.value);
   }
 
   return (
-    <>
-      <h2>Inbox</h2>
-      <ul>
-        {letters.map(letter => (
-          <Letter
-            key={letter.id}
-            letter={letter}
-            isSelected={
-              // TODO: allow multiple selection
-              letter.id === selectedId
-            }
-            onToggle={handleToggle}
-          />
-        ))}
-        <hr />
-        <p>
-          <b>
-            You selected {selectedCount} letters
-          </b>
-        </p>
-      </ul>
-    </>
+    <label>
+      {label}
+      {' '}
+      <input
+        value={text}
+        onChange={handleChange}
+      />
+    </label>
   );
 }
 
