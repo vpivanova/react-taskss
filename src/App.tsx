@@ -1,56 +1,62 @@
-// 3_4_2 Swap two form fields
+// 3_4_3 Reset a detail form
 /*
-  Эта форма позволяет вводить имя и фамилию. В ней также есть флажок, контролирующий, какое поле будет первым. Если установить флажок, поле "Фамилия" появится перед полем "Имя".
+  Это редактируемый список контактов. Вы можете редактировать данные выбранного контакта, а затем либо нажать "Сохранить", чтобы обновить его, либо "Сбросить", чтобы отменить изменения.
 
-  Это почти работает, но есть ошибка. Если вы заполните поле "Имя" и установите флажок, текст останется в первом поле (теперь это "Фамилия"). Исправьте это так, чтобы при изменении порядка ввода текст также перемещался.
+  Когда вы выбираете другой контакт (например, Алису), состояние обновляется, но форма продолжает показывать данные предыдущего контакта. Исправьте это так, чтобы форма сбрасывалась при изменении выбранного контакта.
 */
 
 import { useState } from 'react';
+import ContactList from './ContactList';
+import EditContact from './EditContact';
 
-export default function App() {
-  const [reverse, setReverse] = useState(false);
-  let checkbox = (
-    <label>
-      <input
-        type="checkbox"
-        checked={reverse}
-        onChange={e => setReverse(e.target.checked)}
-      />
-      Reverse order
-    </label>
-  );
-  if (reverse) {
-    return (
-      <>
-        <Field label="Last name" /> 
-        <Field label="First name" />
-        {checkbox}
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Field label="First name" /> 
-        <Field label="Last name" />
-        {checkbox}
-      </>
-    );    
+export default function ContactManager() {
+  const [
+    contacts,
+    setContacts
+  ] = useState(initialContacts);
+  const [
+    selectedId,
+    setSelectedId
+  ] = useState(0);
+  const selectedContact = contacts.find(c =>
+    c.id === selectedId
+  )!!;
+
+  function handleSave(updatedData: Contact) {
+    const nextContacts = contacts.map(c => {
+      if (c.id === updatedData.id) {
+        return updatedData;
+      } else {
+        return c;
+      }
+    });
+    setContacts(nextContacts);
   }
-}
 
-function Field({ label }: { label: string }) {
-  const [text, setText] = useState('');
   return (
-    <label>
-      {label}:{' '}
-      <input
-        type="text"
-        value={text}
-        placeholder={label}
-        onChange={e => setText(e.target.value)}
+    <div>
+      <ContactList
+        contacts={contacts}
+        selectedId={selectedId}
+        onSelect={id => setSelectedId(id)}
       />
-    </label>
-  );
+      <hr />
+      <EditContact
+        initialData={selectedContact}
+        onSave={handleSave}
+      />
+    </div>
+  )
 }
 
+export type Contact = {
+  id: number;
+  name: string;
+  email: string;
+}
 
+const initialContacts: Contact[] = [
+  { id: 0, name: 'Taylor', email: 'taylor@mail.com' },
+  { id: 1, name: 'Alice', email: 'alice@mail.com' },
+  { id: 2, name: 'Bob', email: 'bob@mail.com' }
+];
