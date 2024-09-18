@@ -9,7 +9,10 @@ export type Action = {
 } | {
     type: 'edited_message';
     message: string;
-};
+} | {
+    type: 'sent_message';
+    message: string;
+};;
 
 export const initialState = {
     selectedId: 0,
@@ -17,7 +20,7 @@ export const initialState = {
 };
 
 export function messengerReducer(
-    state: State, 
+    state: State,
     action: Action
 ) {
     switch (action.type) {
