@@ -1,52 +1,46 @@
-// 3_4_5 Fix misplaced state in the list 
+// 3_5_1 Dispatch actions from event handlers 
 /*
-  В этом списке каждый Contact имеет состояние, которое определяет, была ли для него нажата галочка "Показать почту". Нажмите "Показать почту" для Алисы, а затем установите флажок "Показывать в обратном порядке". Вы заметите, что письмо Тейлора теперь развернуто, а письмо Алисы, которое переместилось в самый низ, кажется свернутым.
+  В настоящее время обработчики событий в ContactList и Chat имеют комментарии // TODO. Именно поэтому ввод текста не работает, а нажатие на кнопки не изменяет выбранного получателя.
 
-  Исправьте это так, чтобы развернутое состояние было связано с каждым контактом, независимо от выбранного порядка.
+  Замените эти два // TODO на код для dispatch соответствующих действий. Чтобы увидеть ожидаемую форму и тип действий, проверьте reducer в messengerReducer.js. Reducer уже написан, поэтому вам не придется его изменять. Вам нужно только диспетчеризировать действия в ContactList и Chat.
+
+  PS. Не стоит искать смысла в этом приложении. Последнее отправленное сообщение хранится в состоянии и нигде не отображается.
 */
 
-import { useState } from 'react';
-import Contact from './Contact';
+import { useReducer } from 'react';
+import Chat from './Chat';
+import ContactList from './ContactList';
+import { initialState, messengerReducer } from './messengerReducer';
 
-export default function ContactList() {
-  const [reverse, setReverse] = useState(false);
-
-  const displayedContacts = [...contacts];
-  if (reverse) {
-    displayedContacts.reverse();
-  }
-
+export default function Messenger() {
+  const [state, dispatch] = useReducer(messengerReducer, initialState);
+  const message = state.message;
+  const contact = contacts.find((c) => c.id === state.selectedId)!!;
   return (
-    <>
-      <label>
-        <input
-          type="checkbox"
-          //value={reverse}
-          onChange={e => {
-            setReverse(e.target.checked)
-          }}
-        />{' '}
-        Show in reverse order
-      </label>
-      <ul>
-        {displayedContacts.map((contact, i) =>
-          <li key={i}>
-            <Contact contact={contact} />
-          </li>
-        )}
-      </ul>
-    </>
+    <div>
+      <ContactList
+        contacts={contacts}
+        selectedId={state.selectedId}
+        dispatch={dispatch}
+      />
+      <Chat
+        key={contact.id}
+        message={message}
+        contact={contact}
+        dispatch={dispatch}
+      />
+    </div>
   );
 }
 
-export type ContactType = {
+export type Contact = {
   id: number;
   name: string;
   email: string;
 }
 
-const contacts: ContactType[] = [
-  { id: 0, name: 'Alice', email: 'alice@mail.com' },
-  { id: 1, name: 'Bob', email: 'bob@mail.com' },
-  { id: 2, name: 'Taylor', email: 'taylor@mail.com' }
+const contacts = [
+  {id: 0, name: 'Taylor', email: 'taylor@mail.com'},
+  {id: 1, name: 'Alice', email: 'alice@mail.com'},
+  {id: 2, name: 'Bob', email: 'bob@mail.com'},
 ];
