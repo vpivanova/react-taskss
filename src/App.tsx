@@ -1,9 +1,8 @@
-// 3_5_3  Restore input values when switching
+// 3_5_4  Implement useReducer from scratch 
 /*
-  В этом примере переключение между разными получателями всегда очищает текстовый ввод. Это связано с тем, что вы не хотите разделять черновик одного сообщения между несколькими получателями. Но было бы лучше, если бы ваше приложение "запоминало" черновики для каждого контакта отдельно, восстанавливая их при переключении контактов.
+  В предыдущих примерах вы импортировали хук useReducer из React. В этот раз вам предстоит реализовать хук useReducer самостоятельно! Вот заглушка для начала работы. Он не должен занимать более 10 строк кода.
 
-  Ваша задача - изменить структуру состояния таким образом, чтобы запоминать  отдельный черновик сообщения для каждого контакта. Вам потребуется внести несколько изменений в редуктор, начальное состояние и компоненты.
-    
+  Чтобы проверить свои изменения, попробуйте ввести текст в поле ввода или выбрать контакт.
 */
 
 import { useReducer } from 'react';
@@ -13,7 +12,7 @@ import { initialState, messengerReducer } from './messengerReducer';
 
 export default function Messenger() {
   const [state, dispatch] = useReducer(messengerReducer, initialState);
-  const message = state.message;
+  const message = state.messages[state.selectedId];
   const contact = contacts.find((c) => c.id === state.selectedId)!!;
   return (
     <div>
