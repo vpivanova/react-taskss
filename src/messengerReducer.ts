@@ -10,7 +10,7 @@ export type Action = {
     type: 'edited_message';
     message: string;
 } | {
-    type: 'sent_message';
+    type: 'sent_message'
 };
 
 export const initialState = {
