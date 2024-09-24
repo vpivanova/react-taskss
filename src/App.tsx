@@ -1,44 +1,77 @@
-// 3_5_4  Implement useReducer from scratch 
+// 3_6_1  Replace prop drilling with context
 /*
-  В предыдущих примерах вы импортировали хук useReducer из React. В этот раз вам предстоит реализовать хук useReducer самостоятельно! Вот заглушка для начала работы. Он не должен занимать более 10 строк кода.
+  В этом примере переключение флажка изменяет параметр imageSize, передаваемый каждому <PlaceImage>. Состояние флажка хранится в компоненте верхнего уровня App, но каждый <PlaceImage> должен знать об этом.
 
-  Чтобы проверить свои изменения, попробуйте ввести текст в поле ввода или выбрать контакт.
+  В настоящее время App передает imageSize в List, который передает его в каждое Place, которое передает его в PlaceImage. Удалите пропс imageSize, и вместо этого передавайте его из компонента App непосредственно в PlaceImage.
+
+  Вы можете объявить контекст в файле Context.js.
 */
 
-import { useReducer } from 'react';
-import Chat from './Chat';
-import ContactList from './ContactList';
-import { initialState, messengerReducer } from './messengerReducer';
+import { useState } from 'react';
+import { places, PlaceType } from './data';
+import { getImageUrl } from './utils';
 
-export default function Messenger() {
-  const [state, dispatch] = useReducer(messengerReducer, initialState);
-  const message = state.messages[state.selectedId];
-  const contact = contacts.find((c) => c.id === state.selectedId)!!;
+export default function App() {
+  const [isLarge, setIsLarge] = useState(false);
+  const imageSize = isLarge ? 150 : 100;
   return (
-    <div>
-      <ContactList
-        contacts={contacts}
-        selectedId={state.selectedId}
-        dispatch={dispatch}
+    <>
+      <label>
+        <input
+          type="checkbox"
+          checked={isLarge}
+          onChange={e => {
+            setIsLarge(e.target.checked);
+          }}
+        />
+        Use large images
+      </label>
+      <hr />
+      <List imageSize={imageSize} />
+    </>
+  )
+}
+
+function List({ imageSize }: { imageSize: number }) {
+  const listItems = places.map(place =>
+    <li key={place.id}>
+      <Place
+        place={place}
+        imageSize={imageSize}
       />
-      <Chat
-        key={contact.id}
-        message={message}
-        contact={contact}
-        dispatch={dispatch}
+    </li>
+  );
+  return <ul>{listItems}</ul>;
+}
+
+function Place(
+  { place, imageSize }: 
+  { place: PlaceType, imageSize: number }
+) {
+  return (
+    <>
+      <PlaceImage
+        place={place}
+        imageSize={imageSize}
       />
-    </div>
+      <p>
+        <b>{place.name}</b>
+        {': ' + place.description}
+      </p>
+    </>
   );
 }
 
-export type Contact = {
-  id: number;
-  name: string;
-  email: string;
+function PlaceImage(
+  { place, imageSize }:
+    { place: PlaceType, imageSize: number }
+) {
+  return (
+    <img
+      src={getImageUrl(place)}
+      alt={place.name}
+      width={imageSize}
+      height={imageSize}
+    />
+  );
 }
-
-const contacts = [
-  {id: 0, name: 'Taylor', email: 'taylor@mail.com'},
-  {id: 1, name: 'Alice', email: 'alice@mail.com'},
-  {id: 2, name: 'Bob', email: 'bob@mail.com'},
-];
