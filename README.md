@@ -57,4 +57,26 @@
 - 97920ca 2_7_3 Fix the mutations using non-mutative methods
 - 278cefd 2_7_4 Fix the mutations using Immer
 
+#### Управление состоянием
+
+- f3ee5a0 3_6_1 Replace prop drilling with context
+- 63f7c27 3_5_4 Implement useReducer from scratch
+- c51b7a3 3_5_3 Restore input values when switching
+- c891876 3_5_2 Clear the input on sending a message
+- c7ae0d4 3_5_1 Dispatch actions from event handlers
+- 1125cd7 3_4_5 Fix misplaced state in the list
+- 66f9570 3_4_4 Clear an image while it’s loading
+- 0f779fb 3_4_3 Reset a detail form
+- d8441fc 3_4_2 Swap two form fields
+- 9464c2c 3_4_1 Fix disappearing input text
+- 2b58ba8 3_3_2 Filtering a list
+- 8ffa7b9 3_3_1 Synced inputs
+- c19fbe4 3_2_4 Implement multiple selection
+- 2b7ef13 3_2_3 Fix the disappearing selection
+- aa1dcac 3_2_2 Fix a broken packing list
+- ecc3669 3_2_1 Fix a component that’s not updating
+- 93cd9f3 3_1_3 Refactor the imperative solution without React
+- 77fe8c2 3_1_2 Profile editor
+- 71abf3e 3_1_1 Add and remove a CSS class
+
 Посмотреть список коммитов (задач): ```git log  --pretty=oneline --abbrev-commit```.
