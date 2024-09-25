@@ -1,77 +1,45 @@
-// 3_6_1  Replace prop drilling with context
+// 4_1_1  Fix a broken chat input
 /*
-  В этом примере переключение флажка изменяет параметр imageSize, передаваемый каждому <PlaceImage>. Состояние флажка хранится в компоненте верхнего уровня App, но каждый <PlaceImage> должен знать об этом.
-
-  В настоящее время App передает imageSize в List, который передает его в каждое Place, которое передает его в PlaceImage. Удалите пропс imageSize, и вместо этого передавайте его из компонента App непосредственно в PlaceImage.
-
-  Вы можете объявить контекст в файле Context.js.
+  Если ввести сообщение и нажать "Отправить" то перед появлением сообщения "Отправлено!" произойдет трехсекундная задержка. Кнопка "Отменить" должна остановить появление сообщения "Отправлено!". Она делает это, вызывая clearTimeout для идентификатора таймаута, сохраненного во время handleSend. Однако даже после нажатия кнопки "Отменить" сообщение "Отправлено!" все равно появляется. Найдите причину неработоспособности и устраните ее.
 */
 
 import { useState } from 'react';
-import { places, PlaceType } from './data';
-import { getImageUrl } from './utils';
 
-export default function App() {
-  const [isLarge, setIsLarge] = useState(false);
-  const imageSize = isLarge ? 150 : 100;
+export default function Chat() {
+  const [text, setText] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  let timeoutID = null;
+
+  function handleSend() {
+    setIsSending(true);
+    timeoutID = setTimeout(() => {
+      alert('Отправлено!');
+      setIsSending(false);
+    }, 3000);
+  }
+
+  function handleUndo() {
+    setIsSending(false);
+    clearTimeout(timeoutID);
+  }
+
   return (
     <>
-      <label>
-        <input
-          type="checkbox"
-          checked={isLarge}
-          onChange={e => {
-            setIsLarge(e.target.checked);
-          }}
-        />
-        Use large images
-      </label>
-      <hr />
-      <List imageSize={imageSize} />
-    </>
-  )
-}
-
-function List({ imageSize }: { imageSize: number }) {
-  const listItems = places.map(place =>
-    <li key={place.id}>
-      <Place
-        place={place}
-        imageSize={imageSize}
+      <input
+        disabled={isSending}
+        value={text}
+        onChange={e => setText(e.target.value)}
       />
-    </li>
-  );
-  return <ul>{listItems}</ul>;
-}
-
-function Place(
-  { place, imageSize }: 
-  { place: PlaceType, imageSize: number }
-) {
-  return (
-    <>
-      <PlaceImage
-        place={place}
-        imageSize={imageSize}
-      />
-      <p>
-        <b>{place.name}</b>
-        {': ' + place.description}
-      </p>
+      <button
+        disabled={isSending}
+        onClick={handleSend}>
+        {isSending ? 'Отправляем...' : 'Отправить'}
+      </button>
+      {isSending &&
+        <button onClick={handleUndo}>
+          Отменить
+        </button>
+      }
     </>
-  );
-}
-
-function PlaceImage(
-  { place, imageSize }:
-    { place: PlaceType, imageSize: number }
-) {
-  return (
-    <img
-      src={getImageUrl(place)}
-      alt={place.name}
-      width={imageSize}
-      height={imageSize}
-    />
   );
 }
