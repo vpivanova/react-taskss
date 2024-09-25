@@ -1,30 +1,31 @@
-// 4_1_4  Read the latest state
+// 4_2_1 Play and pause the video
 /*
-  В этом примере после нажатия кнопки "Отправить" происходит небольшая задержка перед отображением сообщения. Введите "hello", нажмите "Отправить", а затем быстро отредактируйте ввод снова. Несмотря на ваши правки, оповещение все равно покажет "hello" (это было значение state на момент нажатия кнопки).
+  В этом примере кнопка переключает переменную состояния для перехода между воспроизведением и паузой. Однако для того, чтобы действительно воспроизвести или поставить видео на паузу, переключения состояния недостаточно. Вам также необходимо вызвать play() и pause() на элементе DOM для <video>. Добавьте к нему ссылку и заставьте кнопку работать.
 
-  Обычно такое поведение - это то, что вы хотите видеть в приложении. Однако иногда могут возникнуть ситуации, когда вы хотите, чтобы асинхронный код считывал последнюю версию некоторого состояния. Можете ли вы придумать, как сделать так, чтобы оповещение показывало текущий текст ввода, а не тот, что был в момент нажатия?
+  Для решения дополнительной задачи синхронизируйте кнопку "Play" с тем, воспроизводится ли видео, даже если пользователь щелкает правой кнопкой мыши на видео и воспроизводит его с помощью встроенных элементов управления мультимедиа браузера. Для этого вам может понадобиться прослушать onPlay и onPause на видео.
 */
+
 import { useState, useRef } from 'react';
 
-export default function Chat() {
-  const [text, setText] = useState('');
+export default function VideoPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  function handleSend() {
-    setTimeout(() => {
-      alert('Sending: ' + text);
-    }, 3000);
+  function handleClick() {
+    const nextIsPlaying = !isPlaying;
+    setIsPlaying(nextIsPlaying);
   }
 
   return (
     <>
-      <input
-        value={text}
-        onChange={e => setText(e.target.value)}
-      />
-      <button
-        onClick={handleSend}>
-        Send
+      <button onClick={handleClick}>
+        {isPlaying ? 'Pause' : 'Play'}
       </button>
+      <video width="250">
+        <source
+          src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+          type="video/mp4"
+        />
+      </video>
     </>
-  );
+  )
 }
