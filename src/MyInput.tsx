@@ -1,24 +1,27 @@
 import { useEffect, useRef } from 'react';
 
 export default function MyInput(
-    {
-        value,
-        onChange
+    { 
+        shouldFocus, 
+        value, 
+        onChange 
     }: {
+        shouldFocus: boolean,
         value: string,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     }) {
+  const ref = useRef<HTMLInputElement>(null);
 
-    const ref = useRef(null);
+  // TODO: call focus() only if shouldFocus is true.
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
 
-    // TODO: This doesn't quite work. Fix it.
-    // ref.current.focus()    
-
-    return (
-        <input
-            ref={ref}
-            value={value}
-            onChange={onChange}
-        />
-    );
+  return (
+    <input
+      ref={ref}
+      value={value}
+      onChange={onChange}
+    />
+  );
 }
