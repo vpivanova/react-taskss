@@ -1,8 +1,8 @@
-// 4_5_2 Switch synchronization on and off 
+// 4_5_3 Investigate a stale value bug
 /*
-  В этом примере Эффект подписывается на событие window pointermove, чтобы переместить розовую точку на экране. Попробуйте навести курсор на область предварительного просмотра (или коснуться экрана, если вы пользуетесь мобильным устройством) и посмотрите, как розовая точка следует за вашим движением.
+  В этом примере розовая точка должна двигаться, когда флажок включен, и прекращать движение, когда флажок выключен. Логика для этого уже реализована: обработчик события handleMove проверяет переменную состояния canMove.
 
-  Также имеется флажок. Установка флажка переключает переменную состояния canMove, но эта переменная состояния не используется нигде в коде. Ваша задача - изменить код так, чтобы при значении canMove, равном false (флажок снят), точка переставала двигаться. После того, как вы снова включите флажок (и установите canMove в true), точка снова должна следовать за движением. Другими словами, то, может ли точка двигаться или нет, должно синхронизироваться с тем, установлен ли флажок.
+  Однако по какой-то причине переменная состояния canMove внутри handleMove кажется "несвежей": она всегда true, даже после того, как вы установили флажок. Как такое возможно? Найдите ошибку в коде и исправьте ее.
 */
 
 import { useState, useEffect } from 'react';
@@ -11,12 +11,16 @@ export default function App() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [canMove, setCanMove] = useState(true);
 
-  useEffect(() => {
-    function handleMove(e) {
+  function handleMove(e) {
+    if (canMove) {
       setPosition({ x: e.clientX, y: e.clientY });
     }
+  }
+
+  useEffect(() => {
     window.addEventListener('pointermove', handleMove);
     return () => window.removeEventListener('pointermove', handleMove);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
