@@ -1,50 +1,49 @@
-// 4_5_3 Investigate a stale value bug
+// 4_5_4 Fix a connection switch 
 /*
-  В этом примере розовая точка должна двигаться, когда флажок включен, и прекращать движение, когда флажок выключен. Логика для этого уже реализована: обработчик события handleMove проверяет переменную состояния canMove.
+  В этом примере сервис чата в chat.js раскрывает два различных API: createEncryptedConnection и createUnencryptedConnection. Корневой компонент App позволяет пользователю выбрать, использовать шифрование или нет, а затем передает соответствующий метод API дочернему компоненту ChatRoom в качестве пропса createConnection.
 
-  Однако по какой-то причине переменная состояния canMove внутри handleMove кажется "несвежей": она всегда true, даже после того, как вы установили флажок. Как такое возможно? Найдите ошибку в коде и исправьте ее.
+  Обратите внимание, что изначально в консольных журналах говорится, что соединение не зашифровано. Попробуйте установить флажок: ничего не произойдет. Однако если после этого вы измените выбранную комнату, то чат снова подключится и включит шифрование (как вы увидите из консольных сообщений). Это ошибка. Исправьте ошибку, чтобы переключение флажка также приводило к переподключению чата.
 */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import ChatRoom from './ChatRoom';
+import {
+  createEncryptedConnection,
+  createUnencryptedConnection,
+} from './chat';
 
 export default function App() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [canMove, setCanMove] = useState(true);
-
-  function handleMove(e) {
-    if (canMove) {
-      setPosition({ x: e.clientX, y: e.clientY });
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('pointermove', handleMove);
-    return () => window.removeEventListener('pointermove', handleMove);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  const [roomId, setRoomId] = useState('general');
+  const [isEncrypted, setIsEncrypted] = useState(false);
   return (
     <>
       <label>
-        <input type="checkbox"
-          checked={canMove}
-          onChange={e => setCanMove(e.target.checked)} 
+        Choose the chat room:{' '}
+        <select
+          value={roomId}
+          onChange={e => setRoomId(e.target.value)}
+        >
+          <option value="general">general</option>
+          <option value="travel">travel</option>
+          <option value="music">music</option>
+        </select>
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          checked={isEncrypted}
+          onChange={e => setIsEncrypted(e.target.checked)}
         />
-        The dot is allowed to move
+        Enable encryption
       </label>
       <hr />
-      <div style={{
-        position: 'absolute',
-        backgroundColor: 'pink',
-        borderRadius: '50%',
-        opacity: 0.6,
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        pointerEvents: 'none',
-        left: -20,
-        top: -20,
-        width: 40,
-        height: 40,
-      }} />
+      <ChatRoom
+        roomId={roomId}
+        createConnection={isEncrypted ?
+          createEncryptedConnection :
+          createUnencryptedConnection
+        }
+      />
     </>
   );
 }
