@@ -79,4 +79,35 @@
 - 77fe8c2 3_1_2 Profile editor
 - 71abf3e 3_1_1 Add and remove a CSS class
 
+#### Механизмы внешнего доступа
+
+- 56cfc49 4_1_1  Fix a broken chat input
+- 4515388 4_1_2  Fix a component failing to re-render
+- 904c3fd 4_1_3  Fix debouncing
+- 1eb1698 4_1_4  Read the latest state
+- d619eec 4_2_1 Play and pause the video
+- 8285f41 4_2_2 Focus the search field
+- 8c368c9 4_2_3 Scrolling an image carouse
+- e7795e6 4_3_1 Focus a field on mount
+- eacafb5 4_3_2 Focus a field conditionally
+- 7bb7b52 4_3_3 Fix an interval that fires twice
+- 96b750c 4_3_4 Fix fetching inside an Effect
+- 6e891c0 4_4_1 Transform data without Effects
+- 7f54552 4_4_2 Cache a calculation without Effects
+- 8b9d2f4 4_4_3 Reset state without Effects
+- 06c069c 4_4_4 Submit a form without Effects
+- a5f94e9 4_5_1 Fix reconnecting on every keystroke
+- ab5e53e 4_5_2 Switch synchronization on and off
+- 253d208 4_5_3 Investigate a stale value bug
+- ad61327 4_5_4 Fix a connection switch
+- 702fd1c 4_5_5 Populate a chain of select boxes
+- 13ce249 4_6_1 Fix a variable that doesn’t update
+- f7efeb6 4_7_1 Fix a resetting interval
+- 8a09f61 4_7_3 Fix a reconnecting chat
+- 85853d9 4_8_1 Extract a useCounter Hook
+- 48e8124 4_8_2 Make the counter delay configurable
+- 527e12b 4_8_3 Extract useInterval out of useCounter
+- efa974e 4_8_5  Implement a staggering movement
+
+
 Посмотреть список коммитов (задач): ```git log  --pretty=oneline --abbrev-commit```.
