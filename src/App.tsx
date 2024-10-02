@@ -1,13 +1,9 @@
-// 1_1_1 Export the component
-/*
-  Исправьте ошибку с импортом компонентов
+// 1_1_2 Fix the return statement 
+/* 
+  Исправьте ошибку в операторе return
 */
 
-function App() {
-  return (
-      <img
-          src="http://localhost:5173/lICfvbD.jpg"
-          alt="Aklilu Lemma"
-      />
-  );
+export default function Profile() {
+  return 
+    <img src="http://localhost:5173/jA8hHMpm.jpg" alt="Katsuko Saruhashi" />;
 }
