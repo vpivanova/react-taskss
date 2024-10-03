@@ -16,7 +16,7 @@ export default function TodoList() {
       <h1>{person.name}'s Todos</h1>
       <img
         className="avatar"
-        src="https://i.imgur.com/7vQD0fPs.jpg"
+        src="http://localhost:5173/7vQD0fPs.jpg"
         alt="Gregorio Y. Zara"
       />
       <ul>
