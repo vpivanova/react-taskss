@@ -1,25 +1,19 @@
-// 1_1_3 Spot the mistake
+// 1_2_1 Split the components further
 /* 
-  Исправьте ошибку в компоненте Profile.
-  Вспомните, как react отличает компоненты от обычных HTML-тегов.
+  В настоящее время Gallery.tsx экспортирует и Profile и Gallery, что немного запутывает.
+
+  Переместите компонент Profile в собственный Profile.tsx, а затем измените компонент App, чтобы он отображал и <Profile />, и <Gallery /> друг за другом.
+
+  В ы можете использовать либо экспорт по умолчанию, либо именованный экспорт для Profile, но убедитесь, что вы используете соответствующий синтаксис импорта как в App.tsx, так и в Gallery.tsx!
 */
 
-function profile() {
-  return (
-    <img
-      src="http://localhost:5173/QIrZWGIs.jpg"
-      alt="Alan L. Hart"
-    />
-  );
-}
+import Gallery from './Gallery.js';
+import { Profile } from './Gallery.js';
 
-export default function Gallery() {
+export default function App() {
   return (
-    <section>
-      <h1>Amazing scientists</h1>
-      <profile />
-      <profile />
-      <profile />
-    </section>
+    <div>
+      <Profile />
+    </div>
   );
 }
