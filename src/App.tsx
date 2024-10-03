@@ -1,6 +1,6 @@
-// 1_4_1 Fix the mistake
+// 1_4_2 Extract information into an object 
 /* 
-  Исправьте ошибку в коде.
+  Извлеките URL изображения в объект person.
 */
 const person = {
   name: 'Gregorio Y. Zara',
@@ -13,10 +13,10 @@ const person = {
 export default function TodoList() {
   return (
     <div style={person.theme}>
-      <h1>{person}'s Todos</h1>
+      <h1>{person.name}'s Todos</h1>
       <img
         className="avatar"
-        src="http://localhost:5173/7vQD0fPs.jpg"
+        src="https://i.imgur.com/7vQD0fPs.jpg"
         alt="Gregorio Y. Zara"
       />
       <ul>
